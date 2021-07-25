@@ -1,15 +1,16 @@
 //Dependencies
 require('dotenv').config()
 const express = require('express'),
-    mysql = require('mysql2/promise');
+    mysql = require('mysql2/promise'),
+    cors = require('cors');
 
 //variables
 const PORT = process.env.PORT || 3010,
     app = express(),
     SLEECTALLQUERY = `SELECT * FROM todo`,
     SLEECTONEQUERY = `SELECT * FROM todo WHERE id=?`,
-    INSERTQUERY = `INSERT INTO todo (title, description) VALUES (?, ?)`,
-    UPDATEQUERY = `UPDATE todo SET title=?, description=? WHERE id=?`,
+    INSERTQUERY = `INSERT INTO todo (title, description, deadline) VALUES (?, ?, ?)`,
+    UPDATEQUERY = `UPDATE todo SET title=?, description=?, deadline=? WHERE id=?`,
     DELETEQUERY = `DELETE FROM todo WHERE id=?`;
 //! For update and delete must always remember to put WHERE. 
 //! Otherwise will delete/update everything. 
@@ -45,6 +46,7 @@ const startApp = async(app,pool) => {
 
 //MiddleWares
 app.use(express.json()); //middleware which parses json, for the body/header
+app.use(cors()); //for frontend, cross-origin resource sharing
 
 app.get("/",(req,res)=>{
     res.send("Hello")
@@ -93,10 +95,10 @@ app.get("/todo/:id",async(req,res)=>{
 
 app.post("/createTodo",async(req,res)=>{
     const conn = await pool.getConnection(),
-        {title, description} = req.body;
+        {title, description, deadline} = req.body;
         //!request body that was feed into it.
     try {
-        const insert = await conn.query(INSERTQUERY,[title, description]);
+        const insert = await conn.query(INSERTQUERY,[title, description, deadline]);
         const id = insert[0].insertId;
         const result = await conn.query(SLEECTONEQUERY,[id]);
         res.status(201).json({
@@ -112,10 +114,10 @@ app.post("/createTodo",async(req,res)=>{
 
 app.put("/updateTodo/:id",async(req,res)=>{
     const conn = await pool.getConnection(),
-        {title, description} = req.body,
+        {title, description, deadline} = req.body,
         id = req.params.id
     try {
-        await conn.query(UPDATEQUERY,[title, description, id]);
+        await conn.query(UPDATEQUERY,[title, description, deadline, id]);
         const result = await conn.query(SLEECTONEQUERY,[id]);
         res.status(201).json({
             data: result[0]
