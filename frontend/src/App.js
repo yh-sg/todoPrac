@@ -1,9 +1,10 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import TodoForm from './todo/TodoForm';
 
 function App() {
   return (
-    <h1>Todo practice</h1>
+    <TodoForm />
   );
 }
 
