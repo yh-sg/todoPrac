@@ -6,12 +6,15 @@ const reducer = (state, action) => {
                                     description: action.payload.description,
                                     deadline: action.payload.deadline
                                 }];
+
         case 'REMOVE_TASK':
             console.log('Task removed');
-            break;
+            return state.filter(task => task.id !== action.payload);
+
         case 'MISSING_INPUT':
             console.log('Missing input');
-            break;
+            return state;
+        
         case 'READ_INITIAL':
             return action.payload.data;
         default:

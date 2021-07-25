@@ -1,11 +1,11 @@
 import React from 'react';
 import reducer from './reducer';
+import TaskList from './TaskList';
 
 const initialState = [];
 
 const TodoForm = () => {
     const [task, setTask] = React.useState({title:'', description:'', deadline:''});
-    const [uniqueId, setUniqueId] = React.useState(0);
     const [state, dispatch] = React.useReducer(reducer, initialState);
 
     React.useEffect(()=> {
@@ -16,8 +16,6 @@ const TodoForm = () => {
         }
         fetchData();
     },[]);
-
-    console.log(state);
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -37,9 +35,7 @@ const TodoForm = () => {
         }
 
         if(!isEmpty){
-            // edit unique
-            const newTask = {...task, id: uniqueId}
-            dispatch({type:'ADD_TASK', payload:newTask});
+            dispatch({type:'ADD_TASK', payload:task});
             setTask({title:'', description:'', deadline:''}); // Clear fields
         }
         else{
@@ -77,20 +73,9 @@ const TodoForm = () => {
                 </div>
                 <button type="submit">Submit</button>
             </form>
-            {
-                state.map(task => {
-                    return(
-                        <div key={task.id}>
-                            <h2>{task.title}</h2>
-                            <h4>by {task.deadline}</h4>
-                            <p>{task.description}</p>
-                            <button>Delete task</button>
-                        </div>
-                    );
-                })
-            }
+            <TaskList state={state} dispatch={dispatch}/>
         </>
     );
-}
+} 
 
 export default TodoForm;
