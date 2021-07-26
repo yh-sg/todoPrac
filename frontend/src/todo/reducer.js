@@ -1,11 +1,17 @@
 const reducer = (state, action) => {
     switch(action.type) {
         case 'ADD_TASK':
-            return [...state,   {
-                                    title: action.payload.title,
-                                    description: action.payload.description,
-                                    deadline: action.payload.deadline
-                                }];
+            const newTask = {
+                                title: action.payload.title,
+                                description: action.payload.description,
+                                deadline: action.payload.deadline
+                            };                                                  
+             return {
+                        ...state,
+                        tasksList: [...state.tasksList, newTask],
+                        modalDisplay: true,
+                        modalContent: 'Item added'
+                    };
 
         case 'REMOVE_TASK':
             console.log('Task removed');
@@ -13,10 +19,13 @@ const reducer = (state, action) => {
 
         case 'MISSING_INPUT':
             console.log('Missing input');
-            return state;
+            return {...state, modalDisplay:true, modalContent:'Missing input'};
+
+        case 'CLOSE_MODAL':
+            return {...state, modalDisplay:false};
         
         case 'READ_INITIAL':
-            return action.payload.data;
+            return {...state, tasksList: action.payload.data};
         default:
             throw new Error();
     }

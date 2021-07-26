@@ -1,8 +1,9 @@
 import React from 'react';
 import reducer from './reducer';
+import Modal from './Modal';
 import TaskList from './TaskList';
 
-const initialState = [];
+const initialState = {tasksList:[], modalDisplay:true, modalContent:''};
 
 const TodoForm = () => {
     const [task, setTask] = React.useState({title:'', description:'', deadline:''});
@@ -42,10 +43,11 @@ const TodoForm = () => {
             dispatch({type:'MISSING_INPUT'});
         }
     }
-
+    console.log(state);
     return (
         <>
             <h1>Todo's Project</h1>
+            {state.modalDisplay && <Modal closeModal={() => dispatch({type:'CLOSE_MODAL'})} modalContent={state.modalContent}/>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="taskTitle">Task title: </label>
@@ -73,7 +75,7 @@ const TodoForm = () => {
                 </div>
                 <button type="submit">Submit</button>
             </form>
-            <TaskList state={state} dispatch={dispatch}/>
+            <TaskList state={state.tasksList} dispatch={dispatch}/>
         </>
     );
 } 
