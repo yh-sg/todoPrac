@@ -47,35 +47,49 @@ const TodoForm = () => {
     return (
         <>
             <h1>Todo's Project</h1>
-            {state.modalDisplay && <Modal closeModal={() => dispatch({type:'CLOSE_MODAL'})} modalContent={state.modalContent}/>}
-            <form onSubmit={handleSubmit}>
+            <div className="container">
+                {state.modalDisplay && <Modal closeModal={() => dispatch({type:'CLOSE_MODAL'})} modalContent={state.modalContent}/>}
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="taskTitle">Task title: </label>
+                        <input 
+                            type="text" 
+                            name="title" 
+                            value={task.title} 
+                            onChange={handleChange}/>
+                    </div>
+                    <div>
+                        <label htmlFor="taskDescription" className="description-label">Task description: </label>
+                        <textarea 
+                            type="text"
+                            className="description" 
+                            name="description" 
+                            value={task.description} 
+                            onChange={handleChange}/>
+                    </div>
+                    <div>
+                        <label htmlFor="taskDeadline">Task deadline: </label>
+                        <input 
+                            type="text" 
+                            name="deadline" 
+                            value={task.deadline} 
+                            onChange={handleChange}/>
+                    </div>
+                    <button type="submit" className="btn">Submit</button>
+                </form>
+            </div>
+            <div className="tasks-list">
+                <TaskList state={state.tasksList} dispatch={dispatch}/>
+            </div>
+            <footer>
                 <div>
-                    <label htmlFor="taskTitle">Task title: </label>
-                    <input 
-                        type="text" 
-                        name="title" 
-                        value={task.title} 
-                        onChange={handleChange}/>
+                    <p>Copyright © 2021 Hello World</p>
                 </div>
                 <div>
-                    <label htmlFor="taskDescription">Task description: </label>
-                    <input 
-                        type="text" 
-                        name="description" 
-                        value={task.description} 
-                        onChange={handleChange}/>
+                    <a className="links" href="https:/www.facebook.com" target="_blank">FB </a>
+                    <a className="links" href="https:/www.LinkedIn.com" target="_blank">Li </a>
                 </div>
-                <div>
-                    <label htmlFor="taskDeadline">Task deadline: </label>
-                    <input 
-                        type="text" 
-                        name="deadline" 
-                        value={task.deadline} 
-                        onChange={handleChange}/>
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-            <TaskList state={state.tasksList} dispatch={dispatch}/>
+            </footer>
         </>
     );
 } 

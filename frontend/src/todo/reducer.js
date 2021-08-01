@@ -14,8 +14,10 @@ const reducer = (state, action) => {
                     };
 
         case 'REMOVE_TASK':
-            console.log('Task removed');
-            return state.filter(task => task.id !== action.payload);
+            return {
+                    ...state,
+                    tasksList: state.tasksList.filter(task => task.id !== action.payload)
+                   }
 
         case 'MISSING_INPUT':
             console.log('Missing input');
