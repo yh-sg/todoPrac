@@ -23,6 +23,18 @@ const reducer = (state, action) => {
             console.log('Missing input');
             return {...state, modalDisplay:true, modalContent:'Missing input'};
 
+        case 'UPDATE_TASK':                    
+            const updateTask = {
+                                    title: action.payload.title,
+                                    description: action.payload.description,
+                                    deadline: action.payload.deadline
+                                };
+            
+            return {
+                        ...state,
+                        tasksList: state.tasksList.map(task => task.id !== action.payload.id ? task : {...updateTask, id: action.payload.id})
+                    };
+
         case 'CLOSE_MODAL':
             return {...state, modalDisplay:false};
         

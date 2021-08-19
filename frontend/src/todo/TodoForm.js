@@ -2,8 +2,9 @@ import React from 'react';
 import reducer from './reducer';
 import Modal from './Modal';
 import TaskList from './TaskList';
+import axios from 'axios';
 
-const initialState = {tasksList:[], modalDisplay:true, modalContent:''};
+const initialState = {tasksList:[], modalDisplay: false, modalContent:''};
 
 const TodoForm = () => {
     const [task, setTask] = React.useState({title:'', description:'', deadline:''});
@@ -11,39 +12,33 @@ const TodoForm = () => {
 
     React.useEffect(()=> {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:4000/todos');
-            const tasks = await response.json();
-            dispatch({type:'READ_INITIAL', payload: tasks});
+            const response = await axios.get('http://localhost:4000/todos');
+            dispatch({type:'READ_INITIAL', payload: response.data});
         }
         fetchData();
-    },[]);
-
+    },[state.tasksList]);
+    
     const handleChange = (e) => {
         const name = e.target.name;
         const input = e.target.value;
         setTask({...task, [name]:input});
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         let isEmpty = false;
 
-        for (const property in task){
-            if (task[property] === ''){
-                isEmpty = true;
-            }
-        }
+        const response = await axios.post("http://localhost:4000/createTodo", task);
 
         if(!isEmpty){
-            dispatch({type:'ADD_TASK', payload:task});
+            dispatch({type:'ADD_TASK', payload:response.data});
             setTask({title:'', description:'', deadline:''}); // Clear fields
         }
         else{
             dispatch({type:'MISSING_INPUT'});
         }
     }
-    console.log(state);
     return (
         <>
             <h1>Todo's Project</h1>

@@ -76,10 +76,10 @@ form button {
 
 .task {
   text-align: center;
-  width: 30%;
+  flex: 0 0 30%;
   border: 1px solid black;
-  margin: 0.25rem;
-  padding: 0.5rem;
+  margin: 0.2rem;
+  padding: 0.2rem;
 }
 
 .task h2,
@@ -106,7 +106,30 @@ footer div {
   height: 1rem;
 }
 
-@media (max-width: 960px) {
+.edit-form {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  z-index: 1;
+  background-color: lightgrey;
+  border-color: black;
+}
+
+.edit-form span {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  cursor: pointer;
+}
+
+/* sm 600px
+md 768px
+lg 1024px
+xl 1280px */
+
+@media (max-width: 1024px) {
   .container {
     text-align: center;
     width: 60%;
@@ -121,7 +144,7 @@ footer div {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   form label {
@@ -145,14 +168,14 @@ footer div {
 
   .task {
     text-align: center;
-    width: 45%;
+    flex: 0 0 45%;
     border: 1px solid black;
-    margin: 0.5rem;
-    padding: 0.5rem;
+    margin: 0.2rem;
+    padding: 0.2rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   form textarea {
     resize: none;
     border: 0.5px solid black;
@@ -162,9 +185,9 @@ footer div {
 
   .task {
     text-align: center;
-    width: 100%;
+    flex: 0 0 100%;
     border: 1px solid black;
-    margin: 0.5rem;
-    padding: 0.5rem;
+    margin: 0.2rem;
+    padding: 0.2rem;
   }
 }
